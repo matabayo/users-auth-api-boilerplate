@@ -1,0 +1,26 @@
+# Build for production
+
+## Build and push the Auth API image
+```bash
+docker build -t nevezide44/users-auth-api-boilerplate -f Dockerfile .
+docker login -u "nevezide44" -p "<access_token>" docker.io
+docker push nevezide44/users-auth-api-boilerplate
+```
+
+## Build and push the postgres image
+TODO :
+- Ajouter dans image posgres `/docker-entrypoint-initdb.d` le script d'initialisation de la DB `init-db.sh`
+- Push la nouvelle image `nevezide44/postgres`
+
+# Deploy to production
+
+1. Connect to the production console
+2. Copy following files :
+   - docker-compose.yml
+   - .env.prod
+
+3. Exec following bash to up all services :
+
+```bash
+docker compose up -df docker-compose.yml --env-file .env.prod
+```
