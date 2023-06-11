@@ -10,7 +10,7 @@
   "scripts": {
     "start": "db-migrate up && node index.js",
     "tdd": "db-migrate up -e test && nodemon --exec mocha",
-    "test": "db-migrate up -e test && c8 mocha --exit --all"
+    "test": "db-migrate up -e test && c8 -r lcov mocha --exit --all"
   },
   "repository": {
     "type": "git",
