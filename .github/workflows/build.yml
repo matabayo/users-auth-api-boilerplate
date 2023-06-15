@@ -1,9 +1,11 @@
-name: BuildnTest
+name: Main
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
 jobs:
   buildntest:
     # Containers must run in Linux based operating systems
@@ -28,14 +30,41 @@ jobs:
           --health-retries 5
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Install dependencies
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Install dependencies
         run: npm ci
-      - run: npm run build --if-present
-      - run: npm test
+      - 
+        name: Test
+        run: npm test
         env:
           TEST_DATABASE_URL: postgres://postgres:ad1e5e1a4ff10b947b84059270e0b1a9@postgres:5432/postgres
           NODE_ENV: test
           API_PORT: 3000
           TOKEN_SECRET: b31106d4188fe4835761f8094e828f517b71610148111d08a275062b6899e649f713de857425e250790873fb7cae6d2dbf2793405446e8522a73b5060592f849
           TOKEN_EXPIRATION: 1800s
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/users-auth-api-boilerplate:latest
