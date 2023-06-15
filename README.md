@@ -25,17 +25,14 @@ TOKEN_EXPIRATION = # JWT expiration delay (ex: 1800s for 30 minutes)
 PROD_DATABASE_URL = # Production | Dev DB connection string (as postgres://user:password@localhost:5432/school)
 TEST_DATABASE_URL = # Test DB connection string (as postgres://user:password@localhost:5432/school_test)
 
-STUDENT_PLATFORM_URL = # Student platform base URL (ex : http://localhost:3010)
-TEACHER_PLATFORM_URL = # Teacher platform base URL (ex : http://localhost:3011)
-
 ```
 
 ## Build it for production
 
 ```bash
-docker build -t nevezide44/auth-api -f Dockerfile .
+docker build -t nevezide44/users-auth-api-boilerplate -f Dockerfile .
 docker login -u "nevezide44" -p "<access_token>" docker.io
-docker push nevezide44/auth-api
+docker push nevezide44/users-auth-api-boilerplate
 ```
 
 ## Use it
