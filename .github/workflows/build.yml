@@ -1,11 +1,11 @@
-name: Build
+name: BuildnTest
 
 on:
   push:
     branches:
       - main
 jobs:
-  test:
+  buildntest:
     # Containers must run in Linux based operating systems
     runs-on: ubuntu-latest
     # Docker Hub image that `container-job` executes in
@@ -39,20 +39,3 @@ jobs:
           API_PORT: 3000
           TOKEN_SECRET: b31106d4188fe4835761f8094e828f517b71610148111d08a275062b6899e649f713de857425e250790873fb7cae6d2dbf2793405446e8522a73b5060592f849
           TOKEN_EXPIRATION: 1800s
-  sonar:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      # If you wish to fail your job when the Quality Gate is red, uncomment the
-      # following lines. This would typically be used to fail a deployment.
-      # - uses: sonarsource/sonarqube-quality-gate-action@master
-      #   timeout-minutes: 5
-      #   env:
-      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
